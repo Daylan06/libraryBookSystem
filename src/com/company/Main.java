@@ -1,10 +1,17 @@
 package com.company;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
+
 import java.awt.print.Book;
+
 import java.util.Scanner;
+
 import java.io.File;
+
 import java.io.FileNotFoundException;
+
 import java.io.FileWriter;
+
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -12,18 +19,47 @@ import java.util.ArrayList;
 public class Main {
 
         private static ArrayList<String> books = new ArrayList<>();
+        private static ArrayList<String> register = new ArrayList<>();
         private static int menuInt = 0;
+        private static int loginSys = 0;
+        private static String password;
+        private static String username;
+        private static String userLog;
+        private static String userPass;
+
         private static int  booksToAdd = 1;
 
 
 
-    private static File myObj = new File("NewFilename.txt"); //Change to something sensible
+    private static final File myObj = new File("bookList.txt");
+    private static final File myLogin = new File("userLogins.txt");
     private static Scanner scanner = new Scanner(System.in);
 
 
     public static void main (String[]args) {
 
         CreateFile();
+        CreateFile2();
+
+        loginSys();
+
+        switch (loginSys) {
+
+            case 1:
+                logInDetails();
+                break;
+
+            case 2:
+                Register();
+                break;
+
+            case 3:
+                DeleteFileLogin();
+                break;
+
+
+        }
+
 
 
 
@@ -58,6 +94,7 @@ public class Main {
     }
 
     public static void ShowMenu() {
+        System.out.println("\n");
         System.out.println("Please choose an option from the menu: ");
         System.out.println("1 - add books ");
         System.out.println("2 - display books ");
@@ -69,6 +106,92 @@ public class Main {
 
     }
 
+    public static void loginSys() {
+        System.out.println("\n");
+        System.out.println("Please choose one of the following options: ");
+        System.out.println("1 - Login ");
+        System.out.println("2 - Register ");
+        System.out.println("3 - Delete data ");
+
+        Scanner input = new Scanner(System.in);
+        loginSys = input.nextInt();
+
+
+
+    }
+    public static void logInDetails() {
+
+        System.out.println("\n");
+        System.out.println("Please enter your username: \n");
+        Scanner input1 = new Scanner(System.in);
+        String userLog = input1.next();
+
+        System.out.println("Now please enter your password \n");
+        Scanner input2 = new Scanner(System.in);
+        String userPass = input2.next();
+
+        logIn();
+    }
+
+    public static void logIn() {
+
+
+
+        try {
+
+
+
+            Scanner myReader = new Scanner(myLogin);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.contains(userPass) && data.contains(userLog)) {
+// need a data.split function to split data then compare the user input to registered value and if it contains it, it will return positive
+
+                    ShowMenu();
+                }
+
+
+
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void Register() {
+
+        System.out.println("\n");
+        System.out.println("Please enter your username: \n");
+        Scanner input1 = new Scanner(System.in);
+        String username = input1.next();
+
+        System.out.println("Now please enter your password \n");
+        Scanner input2 = new Scanner(System.in);
+        String password = input2.next();
+
+        try {
+            FileWriter myWriter = new FileWriter(myLogin.getName(), true); //True means append to file contents, False means overwrite
+
+                myWriter.write(username + "," +  password + "\n");
+
+
+            myWriter.close();
+            System.out.println("Successfully wrote your data to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        loginSys();
+
+
+    }
+
+
     public static void DeleteFile() {
         if (myObj.delete()) {
             System.out.println("Deleted the file: " + myObj.getName());
@@ -77,6 +200,13 @@ public class Main {
         }
     }
 
+    public static void DeleteFileLogin() {
+        if (myLogin.delete()) {
+            System.out.println("Deleted the file: " + myLogin.getName());
+        } else {
+            System.out.println("Failed to delete the file.");
+        }
+    }
 
     public static void WriteToFile() {
         try {
@@ -86,6 +216,19 @@ public class Main {
             }
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void CreateFile2() {
+        try {
+            if (myLogin.createNewFile()) {
+                System.out.println("File created: " + myLogin.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
