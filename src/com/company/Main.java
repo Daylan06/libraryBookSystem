@@ -18,17 +18,16 @@ import java.util.ArrayList;
 
 public class Main {
 
-        private static ArrayList<String> books = new ArrayList<>();
-        private static ArrayList<String> register = new ArrayList<>();
-        private static int menuInt = 0;
-        private static int loginSys = 0;
-        private static String password;
-        private static String username;
-        private static String userLog;
-        private static String userPass;
+    private static ArrayList<String> books = new ArrayList<>();
+    private static ArrayList<String> register = new ArrayList<>();
+    private static int menuInt = 0;
+    private static int loginSys = 0;
+    private static String password;
+    private static String username;
+    private static String userLog;
+    private static String userPass;
 
-        private static int  booksToAdd = 1;
-
+    private static int booksToAdd = 1;
 
 
     private static final File myObj = new File("bookList.txt");
@@ -36,7 +35,7 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
 
-    public static void main (String[]args) {
+    public static void main(String[] args) {
 
         CreateFile();
         CreateFile2();
@@ -47,6 +46,7 @@ public class Main {
 
             case 1:
                 logInDetails();
+
                 break;
 
             case 2:
@@ -61,34 +61,30 @@ public class Main {
         }
 
 
-
-
         for (int j = 0; j < 4; j++) {
             ShowMenu();
 
 
-        switch (menuInt) {
+            switch (menuInt) {
 
-            case 1:
-                int booksToAdd = Integer.parseInt(getInput("How many books do you wish to add?"));
-                for (int i = 0; i < booksToAdd; i++) {
-                    books.add(getBookDetails());
-                }
-                WriteToFile();
-                break;
+                case 1:
+                    int booksToAdd = Integer.parseInt(getInput("How many books do you wish to add?"));
+                    for (int i = 0; i < booksToAdd; i++) {
+                        books.add(getBookDetails());
+                    }
+                    WriteToFile();
+                    break;
 
-            case 2:
-                ReadFile();
-                break;
+                case 2:
+                    ReadFile();
+                    break;
 
-            case 3:
-                DeleteFile();
-                break;
+                case 3:
+                    DeleteFile();
+                    break;
+            }
+
         }
-
-    }
-
-
 
 
     }
@@ -101,7 +97,7 @@ public class Main {
         System.out.println("3 - delete file ");
 
         Scanner input = new Scanner(System.in);
-       menuInt = input.nextInt();
+        menuInt = input.nextInt();
 
 
     }
@@ -117,50 +113,44 @@ public class Main {
         loginSys = input.nextInt();
 
 
-
     }
+
     public static void logInDetails() {
 
-        System.out.println("\n");
-        System.out.println("Please enter your username: \n");
-        Scanner input1 = new Scanner(System.in);
-        String userLog = input1.next();
-
-        System.out.println("Now please enter your password \n");
-        Scanner input2 = new Scanner(System.in);
-        String userPass = input2.next();
-
-        logIn();
-    }
-
-    public static void logIn() {
+       A: while (true) {
 
 
+            System.out.println("\n");
+            System.out.println("Please enter your username: \n");
+            Scanner input1 = new Scanner(System.in);
+            String userLog = input1.next();
 
-        try {
+            System.out.println("Now please enter your password \n");
+            Scanner input2 = new Scanner(System.in);
+            String userPass = input2.next();
+
+            try {
 
 
-
-            Scanner myReader = new Scanner(myLogin);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                if (data.contains(userPass) && data.contains(userLog)) {
+                Scanner myReader = new Scanner(myLogin);
+                while (myReader.hasNextLine()) {
+                    String data = myReader.nextLine();
+                    if (data.contains(userPass) && data.contains(userLog)) {
 // need a data.split function to split data then compare the user input to registered value and if it contains it, it will return positive
+                        break A;
+                    }
 
-                    ShowMenu();
+
                 }
-
-
-
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
             }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
         }
-
-
     }
+
+
 
     public static void Register() {
 
@@ -176,7 +166,7 @@ public class Main {
         try {
             FileWriter myWriter = new FileWriter(myLogin.getName(), true); //True means append to file contents, False means overwrite
 
-                myWriter.write(username + "," +  password + "\n");
+            myWriter.write(username + "," + password + "\n");
 
 
             myWriter.close();
@@ -212,7 +202,7 @@ public class Main {
         try {
             FileWriter myWriter = new FileWriter(myObj.getName(), true); //True means append to file contents, False means overwrite
             for (int i = 0; i < books.size(); i++) {
-                myWriter.write(books.get(i)+"\n");
+                myWriter.write(books.get(i) + "\n");
             }
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -263,21 +253,20 @@ public class Main {
         }
     }
 
-        public static String getBookDetails () {
-            int ISBN = Integer.parseInt(getInput("Enter the books ISBN"));
-            String BookName = getInput("Enter the book's name");
-            String bookAuthor = getInput("Enter the books author");
-            String bookGenre = getInput("Enter the books genre");
-            return (ISBN + "," + BookName + "," + bookAuthor + ',' + bookGenre);
-        }
+    public static String getBookDetails() {
+        int ISBN = Integer.parseInt(getInput("Enter the books ISBN"));
+        String BookName = getInput("Enter the book's name");
+        String bookAuthor = getInput("Enter the books author");
+        String bookGenre = getInput("Enter the books genre");
+        return (ISBN + "," + BookName + "," + bookAuthor + ',' + bookGenre);
+    }
 
-        public static String getInput (String prompt){
-            System.out.println(prompt);
-            Scanner input = new Scanner(System.in);
-            return input.nextLine();
-        }
+    public static String getInput(String prompt) {
+        System.out.println(prompt);
+        Scanner input = new Scanner(System.in);
+        return input.nextLine();
+    }
 
 
-
-                }
+}
 
