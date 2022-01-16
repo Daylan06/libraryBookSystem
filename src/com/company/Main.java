@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class Main {
 
+    private static int n = 0;
     private static ArrayList<String> books = new ArrayList<>();
     private static ArrayList<String> register = new ArrayList<>();
     private static int menuInt = 0;
@@ -26,11 +27,15 @@ public class Main {
     private static String username;
     private static String userLog;
     private static String userPass;
+    private static String BookName2;
+    private static String bookGenre2;
+    private static String bookAuthor2;
 
     private static int booksToAdd = 1;
 
 
     private static final File myObj = new File("bookList.txt");
+    private static final File myBorrow = new File("bookBorrow.txt");
     private static final File myLogin = new File("userLogins.txt");
     private static Scanner scanner = new Scanner(System.in);
 
@@ -39,6 +44,7 @@ public class Main {
 
         CreateFile();
         CreateFile2();
+        CreateFile3();
 
         loginSys();
 
@@ -61,7 +67,7 @@ public class Main {
         }
 
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 5; j++) {
             ShowMenu();
 
 
@@ -75,6 +81,9 @@ public class Main {
                     WriteToFile();
                     break;
 
+
+
+
                 case 2:
                     ReadFile();
                     break;
@@ -82,12 +91,76 @@ public class Main {
                 case 3:
                     DeleteFile();
                     break;
+
+                case 4:
+
+                BookCheck();
+                break;
+
+                case 5:
+                borrowRead();
+                break;
+
+
+
+
+
+
             }
 
         }
 
 
     }
+    public static void borrowRead() {
+        try {
+            Scanner myReader = new Scanner(myBorrow);
+            while (myReader.hasNextLine()) {
+                String data3 = myReader.nextLine();
+                System.out.println(data3);
+
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void BookCheck() {
+
+
+        B:
+        while (true) {
+                int ISBN2 = Integer.parseInt(getInput("Enter the books ISBN"));
+                String BookName2 = getInput("Enter the book's name");
+                String bookAuthor2 = getInput("Enter the books author");
+                String bookGenre2 = getInput("Enter the books genre");
+
+
+            try {
+                Scanner myReader = new Scanner(myBorrow);
+                while (myReader.hasNextLine()) {
+
+                    String data = myReader.nextLine();
+                    if (data.contains(BookName2) && data.contains(bookAuthor2) && data.contains(bookGenre2)) {
+                        break B;
+
+                    }
+
+
+                }
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occured.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 
     public static void ShowMenu() {
         System.out.println("\n");
@@ -95,6 +168,8 @@ public class Main {
         System.out.println("1 - add books ");
         System.out.println("2 - display books ");
         System.out.println("3 - delete file ");
+        System.out.println("4 - borrow books");
+        System.out.println("5 - borrowed books");
 
         Scanner input = new Scanner(System.in);
         menuInt = input.nextInt();
@@ -237,6 +312,18 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static void CreateFile3() {
+        try {
+            if (myBorrow.createNewFile()) {
+                System.out.println("File created: " + myBorrow.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 
     public static void ReadFile() {
         try {
@@ -258,7 +345,9 @@ public class Main {
         String BookName = getInput("Enter the book's name");
         String bookAuthor = getInput("Enter the books author");
         String bookGenre = getInput("Enter the books genre");
-        return (ISBN + "," + BookName + "," + bookAuthor + ',' + bookGenre);
+        n++;
+        return (n + ")" + " " + ISBN + "," + BookName + "," + bookAuthor + ',' + bookGenre + "\n");
+
     }
 
     public static String getInput(String prompt) {
