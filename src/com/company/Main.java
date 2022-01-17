@@ -130,21 +130,21 @@ public class Main {
 
     public static void BookCheck() {
 
+        String ISBN2 = getInput("Enter the books ISBN");
+        String BookName = getInput("Enter the book's name");
+
 
         B:
         while (true) {
-                int ISBN2 = Integer.parseInt(getInput("Enter the books ISBN"));
-                String BookName2 = getInput("Enter the book's name");
-                String bookAuthor2 = getInput("Enter the books author");
-                String bookGenre2 = getInput("Enter the books genre");
+
 
 
             try {
-                Scanner myReader = new Scanner(myBorrow);
+                Scanner myReader = new Scanner(myObj);
                 while (myReader.hasNextLine()) {
 
                     String data = myReader.nextLine();
-                    if (data.contains(BookName2) && data.contains(bookAuthor2) && data.contains(bookGenre2)) {
+                    if (data.contains(ISBN2 && BookName) {
                         break B;
 
                     }
@@ -153,7 +153,7 @@ public class Main {
                 }
                 myReader.close();
             } catch (FileNotFoundException e) {
-                System.out.println("An error occured.");
+                System.out.println("An error occurred.");
                 e.printStackTrace();
             }
         }
@@ -355,6 +355,14 @@ public class Main {
         Scanner input = new Scanner(System.in);
         return input.nextLine();
     }
+
+    public static int getIntInput(String prompt) {
+        System.out.println(prompt);
+        Scanner input = new Scanner(System.in);
+        return input.nextInt();
+    }
+
+
 
 
 }
