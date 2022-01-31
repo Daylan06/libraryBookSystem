@@ -144,7 +144,7 @@ public class Main {
                 while (myReader.hasNextLine()) {
 
                     String data = myReader.nextLine();
-                    if (data.contains(ISBN2 && BookName) {
+                    if (data.contains(ISBN2)) {
                         break B;
 
                     }
@@ -157,6 +157,19 @@ public class Main {
                 e.printStackTrace();
             }
         }
+        try {
+            FileWriter myWriter = new FileWriter(myBorrow.getName(), true); //True means append to file contents, False means overwrite
+
+            myWriter.write(ISBN2 + " , " + BookName);
+            myWriter.close();
+            System.out.println("Successfully wrote your data to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+
+
     }
 
 
